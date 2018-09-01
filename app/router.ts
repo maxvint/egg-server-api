@@ -14,10 +14,10 @@ export default (app: Application) => {
   // user
   // router.resources('user', `/${VERSION}/user`, controller.user);
   router.get(`/${VERSION}/users`, controller.user.index);
-  router.get(`/${VERSION}/user/:id`, userInterceptor, controller.user.show);
-  router.put(`/${VERSION}/user/:id`, userInterceptor, controller.user.update);
   router.get(`/${VERSION}/user/logout`, userInterceptor, controller.user.logout);
   router.get(`/${VERSION}/user/profile`, userInterceptor, controller.user.profile);
+  router.get(`/${VERSION}/user/:id`, controller.user.show);
+  router.put(`/${VERSION}/user/:id`, controller.user.update);
 
   // like
 

@@ -34,7 +34,14 @@ export default class UserController extends Controller {
     ctx.helper.success({ ctx });
   }
 
-  public async logout() {}
+  public async logout() {
+    const { ctx } = this;
+    ctx.helper.success({ ctx });
+  }
 
-  public async profile() {}
+  public async profile() {
+    const { ctx, service } = this;
+    const user = await service.user.profile();
+    ctx.helper.success({ ctx, code: 1, data: user });
+  }
 }

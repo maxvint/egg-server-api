@@ -13,3 +13,12 @@ export const getUserProfile = (user: object) => {
   user['password'] = undefined;
   return user;
 }
+
+export const parseToken = (header: string) => {
+  const tokenRegx = /[bB]earer ((\w|.|-)+)/;
+  const group = header.match(tokenRegx);
+  if (group) {
+    return group[1];
+  }
+  return false;
+}

@@ -1,16 +1,26 @@
 import { Application } from 'egg';
-const jwt = require('jsonwebtoken');
+import * as jwt from 'jsonwebtoken';
+
+// interface UserInfo {
+//   isAuth: boolean;
+//   message: string;
+//   info: object;
+// }
+
+// interface accessToken {
+//   data: object;
+//   exp: number;
+// }
 
 export default (app: Application) => {
   return async function userInterceptor (ctx, next) {
     console.log('userInterceptor before');
 
     ctx.state.user = {
-      is_auth: false,
+      isAuth: false,
       message: '用户未登录',
       info: {},
     };
-    let user_id = 0;
 
     const accessTokenHeaderStr = ctx.request.headers.authorization || false;
 
@@ -26,14 +36,9 @@ export default (app: Application) => {
     }
 
     // token异常过期后，刷新重新返回token
-    try {
-      const decoded = jwt.verify(accessToken, app.config.jwt.secret);
-      user_id = decoded.data.id;
-    } catch (err) {
-      console.log(err);
-    }
-
-    const user = ctx.model.User.findById(user_id);
+    const decoded = await jwt.verify(accessToken, app.config.jwt.secret);
+    const { _id: userId } = decoded['data'];
+    const user = await ctx.model.User.findById(userId);
 
     if (!user) {
       ctx.state.user.message = '用户身份异常';
@@ -41,8 +46,14 @@ export default (app: Application) => {
     }
 
     user.password = null;
-    ctx.state.user.is_auth = true;
+    ctx.state.user.isAuth = true;
     ctx.state.user.info = user;
+    ctx.state.user = {
+      isAuth: true,
+      info: user,
+      message: '认证成功',
+    };
+
     await next();
-  }
+  };
 };

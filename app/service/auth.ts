@@ -94,7 +94,7 @@ export default class Auth extends Service {
             ctx,
             data: {
               user: ctx.helper.getUserProfile(user),
-              token
+              token,
             },
             message: ctx.__('Auth_signup_success'),
           });

@@ -19,7 +19,7 @@ export interface UserItem {
 
 export default class User extends Service {
 
-  private userFilter: Array<string>;
+  private userFilter: string[];
 
   constructor(ctx) {
     super(ctx);
@@ -68,6 +68,12 @@ export default class User extends Service {
     }
     payload['updatedAt'] = new Date();
     return await ctx.model.User.findByIdAndUpdate(_id, payload);
+  }
+
+  public async profile() {
+    const { ctx } = this;
+    const { info: { _id: userId } } = ctx.state.user;
+    return await this.ctx.model.User.findById(userId, this.userFilter);
   }
 
   public async findById(id: string): Promise<UserItem> {
