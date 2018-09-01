@@ -1,0 +1,9 @@
+{
+  "Auth_mobile_used": "This mobile has been used",
+  "Auth_signup_success": "Sign up success",
+  "Auth_mobile_not_found": "This mobile not found",
+  "Auth_signin_success": "Sign in success",
+  "Auth_signin_password_error": "Your password error",
+
+  "Common_user_not_found": "User not found"
+}
