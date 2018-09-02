@@ -1,4 +1,4 @@
-import { Application, Context } from 'egg';
+import { Application } from 'egg';
 import * as jwt from 'jsonwebtoken';
 
 // interface UserInfo {
@@ -13,13 +13,15 @@ import * as jwt from 'jsonwebtoken';
 // }
 
 export default (app: Application) => {
-  return async function userInterceptor (ctx: Context, next: any) {
+  return async function userInterceptor (ctx, next) {
     console.log('userInterceptor before');
 
     ctx.state.user = {
       isAuth: false,
       info: {},
     };
+
+    let userId;
 
     const accessTokenHeaderStr = ctx.request.headers.authorization || false;
 
@@ -36,10 +38,20 @@ export default (app: Application) => {
     }
 
     // token异常过期后，刷新重新返回token
-    const decoded = await jwt.verify(accessToken, app.config.jwt.secret);
-    const { _id: userId } = decoded['data'];
-    const user = await ctx.model.User.findById(userId);
+    try {
+      const decoded = await jwt.verify(accessToken, app.config.jwt.secret);
+      userId = decoded['data']['_id'];
+    } catch (err) {
+      console.log(err);
+      if (err.name === 'TokenExpiredError') {
+        ctx.throw(401, ctx.__('JWT_user_token_expired'));
+      } else {
+        ctx.throw(401, ctx.__('JWT_user_token_parse_error'));
+      }
+      return await next();
+    }
 
+    const user = await ctx.model.User.findById(userId);
     if (!user) {
       ctx.throw(401, ctx.__('JWT_user_not_found'));
       return await next();

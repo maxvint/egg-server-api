@@ -1,7 +1,7 @@
-import { Application, Context } from 'egg';
+import { Application } from 'egg';
 
 export default (app: Application) => {
-  return async (ctx: Context, next: any) => {
+  return async (ctx, next) => {
     try {
       await next();
     } catch (err) {

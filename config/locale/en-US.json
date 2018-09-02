@@ -9,6 +9,8 @@
   "JWT_user_token_missing": "User token missing",
   "JWT_user_token_error": "User token error",
   "JWT_user_not_found": "User not found",
+  "JWT_user_token_expired": "User token expired",
+  "JWT_user_token_parse_error": "Token parse error",
 
   "Common_user_not_found": "User not found"
 }
