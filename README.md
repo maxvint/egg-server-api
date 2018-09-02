@@ -40,7 +40,7 @@ $ npm start
 ##### User
 - GET /api/v1/user 获取热门用户
 - GET /api/v1/user/:id 获取某个用户的详细信息
-- GET /api/v1/user/me 获取当前用户的完整信息
+- GET /api/v1/user/profile 获取当前用户的完整信息
 - GET /api/v1/user/:id/reply 获取用户回帖列表
 - GET /api/v1/user/:id/topics 获取用户话题列表
 - POST /api/v1/user/:id/block 屏蔽用户

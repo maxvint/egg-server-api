@@ -14,8 +14,6 @@ import * as jwt from 'jsonwebtoken';
 
 export default (app: Application) => {
   return async function userInterceptor (ctx, next) {
-    console.log('userInterceptor before');
-
     ctx.state.user = {
       isAuth: false,
       info: {},
@@ -42,7 +40,6 @@ export default (app: Application) => {
       const decoded = await jwt.verify(accessToken, app.config.jwt.secret);
       userId = decoded['data']['_id'];
     } catch (err) {
-      console.log(err);
       if (err.name === 'TokenExpiredError') {
         ctx.throw(401, ctx.__('JWT_user_token_expired'));
       } else {

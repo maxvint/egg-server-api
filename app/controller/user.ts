@@ -44,4 +44,29 @@ export default class UserController extends Controller {
     const user = await service.user.profile();
     ctx.helper.success({ ctx, code: 1, data: user });
   }
+
+  public async topics() {
+    const { ctx } = this;
+    ctx.helper.success({ ctx, code: 1, data: 'topics' });
+  }
+
+  public async reply() {
+    const { ctx } = this;
+    ctx.helper.success({ ctx, code: 1, data: 'reply' });
+  }
+
+  public async following() {
+    const { ctx } = this;
+    ctx.helper.success({ ctx, code: 1, data: 'following' });
+  }
+
+  public async followers() {
+    const { ctx } = this;
+    ctx.helper.success({ ctx, code: 1, data: 'followers' });
+  }
+
+  public async favorites() {
+    const { ctx } = this;
+    ctx.helper.success({ ctx, code: 1, data: 'favorites' });
+  }
 }
