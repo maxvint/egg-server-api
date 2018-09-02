@@ -1,4 +1,4 @@
-import { Application } from 'egg';
+import { Application, Context } from 'egg';
 import * as jwt from 'jsonwebtoken';
 
 // interface UserInfo {
@@ -13,25 +13,25 @@ import * as jwt from 'jsonwebtoken';
 // }
 
 export default (app: Application) => {
-  return async function userInterceptor (ctx, next) {
+  return async function userInterceptor (ctx: Context, next: any) {
     console.log('userInterceptor before');
 
     ctx.state.user = {
       isAuth: false,
-      message: '用户未登录',
       info: {},
     };
 
     const accessTokenHeaderStr = ctx.request.headers.authorization || false;
 
     if (!accessTokenHeaderStr) {
-      ctx.state.user.message = '缺少token';
+      ctx.state.user.message = '缺少Token';
+      ctx.throw(401, ctx.__('JWT_user_token_missing'));
       return await next();
     }
 
     const accessToken = ctx.helper.parseToken(accessTokenHeaderStr);
     if (!accessToken) {
-      ctx.state.user.message = '格式异常';
+      ctx.throw(401, ctx.__('JWT_user_token_error'));
       return await next();
     }
 
@@ -41,17 +41,13 @@ export default (app: Application) => {
     const user = await ctx.model.User.findById(userId);
 
     if (!user) {
-      ctx.state.user.message = '用户身份异常';
+      ctx.throw(401, ctx.__('JWT_user_not_found'));
       return await next();
     }
 
-    user.password = null;
-    ctx.state.user.isAuth = true;
-    ctx.state.user.info = user;
     ctx.state.user = {
       isAuth: true,
       info: user,
-      message: '认证成功',
     };
 
     await next();

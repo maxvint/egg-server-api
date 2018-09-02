@@ -23,7 +23,7 @@ export default class Auth extends Service {
       const { mobile } = payload;
       const user = await service.user.findByMobile(mobile);
 
-      if(!user){
+      if (!user) {
         ctx.helper.success({
           ctx,
           code: 0,
@@ -44,7 +44,7 @@ export default class Auth extends Service {
             ctx,
             data: {
               user: ctx.helper.getUserProfile(user),
-              token
+              token,
             },
             message: ctx.__('Auth_signin_success'),
           });
@@ -64,7 +64,7 @@ export default class Auth extends Service {
 
   /**
    * 用户注册
-   * @param payload 
+   * @param payload
    */
   public async signUp(payload: SignUpPayload) {
     const { ctx, service, app } = this;

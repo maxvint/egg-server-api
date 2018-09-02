@@ -5,5 +5,10 @@
   "Auth_signin_success": "Sign in success",
   "Auth_signin_password_error": "Your password error",
 
+  "JWT_user_without_sign_in": "User not sign in",
+  "JWT_user_token_missing": "User token missing",
+  "JWT_user_token_error": "User token error",
+  "JWT_user_not_found": "User not found",
+
   "Common_user_not_found": "User not found"
 }
