@@ -27,6 +27,9 @@ export default (app: Application) => {
   // like
 
   // node
+  router.get(`/${VERSION}/nodes`, controller.node.index);
+  router.get(`/${VERSION}/node/:id`, controller.node.show);
+  router.post(`/${VERSION}/node`, controller.node.create);
 
   // notification
 
@@ -35,4 +38,8 @@ export default (app: Application) => {
   // reply
 
   // topic
+  router.get(`/${VERSION}/topics`, controller.topic.index);
+  router.get(`/${VERSION}/topic/:id`, controller.topic.show);
+  router.post(`/${VERSION}/topic`, controller.topic.create);
+  router.put(`/${VERSION}/topic`, controller.topic.update);
 };

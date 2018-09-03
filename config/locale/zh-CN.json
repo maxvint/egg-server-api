@@ -13,5 +13,5 @@
   "JWT_user_token_expired": "Token过期",
   "JWT_user_token_parse_error": "Token解析异常",
 
-  "Common_user_not_found": "用户未找到"
+  "Common_item_not_found": "未找到记录"
 }

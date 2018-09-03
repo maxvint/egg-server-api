@@ -2,21 +2,21 @@ import { Controller } from 'egg';
 
 export default class AuthController extends Controller {
 
-  private UserSignInTransfer: object;
-  private UserSignUpTransfer: object;
+  private userSignInTransfer: object;
+  private userSignUpTransfer: object;
 
   constructor(ctx) {
     super(ctx);
 
-    this.UserSignInTransfer = {
+    this.userSignInTransfer = {
       mobile: {type: 'string', required: true, allowEmpty: false},
-      password: {type: 'string', required: true, allowEmpty: false}
-    }
+      password: {type: 'string', required: true, allowEmpty: false},
+    };
 
-    this.UserSignUpTransfer = {
+    this.userSignUpTransfer = {
       mobile: {type: 'string', required: true, allowEmpty: false},
-      password: {type: 'string', required: true, allowEmpty: false}
-    }
+      password: {type: 'string', required: true, allowEmpty: false},
+    };
   }
 
   public async index() {
@@ -26,21 +26,15 @@ export default class AuthController extends Controller {
 
   public async signIn() {
     const {ctx, service} = this;
-    // 校验参数
-    ctx.validate(this.UserSignInTransfer, null);
-    // 组装参数
+    ctx.validate(this.userSignInTransfer, null);
     const payload = ctx.request.body || {};
-    // 调用service进行业务处理
     await service.auth.signIn(payload);
   }
 
   public async signUp() {
     const {ctx, service} = this;
-    // 校验参数
-    ctx.validate(this.UserSignUpTransfer, null);
-    // 组装参数
+    ctx.validate(this.userSignUpTransfer, null);
     const payload = ctx.request.body || {};
-    // 调用service进行业务处理
     await service.auth.signUp(payload);
   }
 }

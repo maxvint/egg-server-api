@@ -6,12 +6,11 @@ import { Service } from 'egg';
 
 export interface UserItem {
   _id: string;
-  name: string;
   mobile: string;
+  name: string;
   password: string;
   avatar: string;
   profile: object;
-  extra: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
@@ -46,27 +45,27 @@ export default class User extends Service {
     const { ctx } = this;
     const user = await this.findById(_id);
     if (!user) {
-      ctx.throw(404, ctx.__('Common_user_not_found'));
+      ctx.throw(404, ctx.__('Common_item_not_found'));
     }
     return await ctx.model.User.findByIdAndDelete(_id);
   }
 
-  public async show(_id: string){
+  public async show(_id: string) {
     const { ctx } = this;
     const user = await ctx.model.User.findById(_id, this.userFilter);
     if (!user) {
-      ctx.throw(404, ctx.__('Common_user_not_found'));
+      ctx.throw(404, ctx.__('Common_item_not_found'));
     }
     return user;
   }
 
-  public async update(_id: string, payload: object): Promise<UserItem> {
+  public async update(_id: string, payload: UserItem): Promise<UserItem> {
     const { ctx } = this;
     const user = await this.findById(_id);
     if (!user) {
-      ctx.throw(404, ctx.__('Common_user_not_found'));
+      ctx.throw(404, ctx.__('Common_item_not_found'));
     }
-    payload['updatedAt'] = new Date();
+    payload.updatedAt = new Date();
     return await ctx.model.User.findByIdAndUpdate(_id, payload);
   }
 
@@ -76,15 +75,15 @@ export default class User extends Service {
     return await this.ctx.model.User.findById(userId, this.userFilter);
   }
 
-  public async findById(id: string): Promise<UserItem> {
-    return await this.ctx.model.User.findById(id);
+  public async findById(_id: string): Promise<UserItem> {
+    return await this.ctx.model.User.findById(_id);
   }
 
   public async findByMobile(mobile: string): Promise<UserItem> {
     return await this.ctx.model.User.findOne({mobile});
   }
 
-  public async findByIdAndUpdate(id: string, values: UserItem) {
-    return await this.ctx.model.User.findByIdAndUpdate(id, values);
+  public async findByIdAndUpdate(_id: string, values: UserItem) {
+    return await this.ctx.model.User.findByIdAndUpdate(_id, values);
   }
 }
