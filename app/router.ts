@@ -40,6 +40,6 @@ export default (app: Application) => {
   // topic
   router.get(`/${VERSION}/topics`, controller.topic.index);
   router.get(`/${VERSION}/topic/:id`, controller.topic.show);
-  router.post(`/${VERSION}/topic`, controller.topic.create);
-  router.put(`/${VERSION}/topic`, controller.topic.update);
+  router.post(`/${VERSION}/topic`, userInterceptor, controller.topic.create);
+  router.put(`/${VERSION}/topic`, userInterceptor, controller.topic.update);
 };

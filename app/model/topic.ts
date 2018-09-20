@@ -4,7 +4,6 @@ export default (app: Application) => {
   const mongoose = app.mongoose;
   const topicSchema = new mongoose.Schema({
     title: {
-      // type: mongoose.Schema.Types.String,
       type: String,
       required: true,
     },

@@ -37,7 +37,7 @@ export default class Auth extends Service {
           // 生成Token令牌
           const token = jwt.sign({
             data: user,
-            exp: Math.floor(Date.now() / 1000) + (60 * 60),
+            exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
           }, app.config.jwt.secret);
 
           ctx.helper.success({
@@ -87,7 +87,7 @@ export default class Auth extends Service {
           // 生成Token令牌
           const token = jwt.sign({
             data: user,
-            exp: Math.floor(Date.now() / 1000) + (60 * 60),
+            exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
           }, app.config.jwt.secret);
 
           ctx.helper.success({

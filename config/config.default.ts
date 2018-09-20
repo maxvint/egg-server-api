@@ -25,18 +25,18 @@ export default (appInfo: EggAppInfo) => {
     csrf: {
       enable: false,
     },
-  }
+  };
 
   config.bcrypt = {
-    saltRounds: 10 // default 10
-  }
+    saltRounds: 10, // default 10
+  };
 
   config.i18n = {
     queryField: 'locale',
     cookieField: 'locale',
     // Cookie 默认一年后过期， 如果设置为 Number，则单位为 ms
     cookieMaxAge: '1y',
-  }
+  };
 
   config.mongoose = {
     url: 'mongodb://127.0.0.1:27017/eggpress',
@@ -45,11 +45,11 @@ export default (appInfo: EggAppInfo) => {
       reconnectTries: Number.MAX_VALUE,
       bufferMaxEntries: 0,
     },
-  }
+  };
 
   config.jwt = {
-    secret: 'Great4-M',
-  }
+    secret: 'OCA!8J(64g+7h6^1&xk9x3Z(Y!*8+j0y',
+  };
 
   return config;
 };

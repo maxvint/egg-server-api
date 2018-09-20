@@ -20,8 +20,8 @@ export default class TopicController extends Controller {
 
   public async create() {
     const { ctx, service } = this;
-    ctx.validate(this.topicCreateTransfer, null);
     const payload = ctx.request.body || {};
+    ctx.validate(this.topicCreateTransfer, payload);
     const topic = await service.topic.create(payload);
     ctx.helper.success({ ctx, code: 1, data: topic });
   }
