@@ -1,6 +1,9 @@
 {
   "extends": "tslint:latest",
   "rules": {
+    "one-line": [
+      true
+    ],
     "quotemark": [
       true,
       "single",
@@ -14,10 +17,14 @@
       "warn"
     ],
     "no-string-literal": true,
+    "semicolon": [
+      true,
+      "never"
+    ],
     "space-before-function-paren": false,
     "interface-name": [
       true,
-      "never-prefix"
+      "always-prefix"
     ],
     "adjacent-overload-signatures": true,
     "member-access": [
@@ -36,9 +43,9 @@
     ],
     "variable-name": [
       true,
-      "allow-leading-underscore"
+      "allow-leading-underscore",
+      "allow-pascal-case"
     ],
     "align": [true, "statements"]
   }
 }
-

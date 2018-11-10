@@ -1,14 +1,12 @@
 // This file was auto created by egg-ts-helper
 // Do not modify this file!!!!!!!!!
 
-import Node from '../../../app/model/node';
-import Topic from '../../../app/model/topic';
+import Model from '../../../app/model/model';
 import User from '../../../app/model/user';
 
 declare module 'sequelize' {
   interface Sequelize {
-    Node: ReturnType<typeof Node>;
-    Topic: ReturnType<typeof Topic>;
+    Model: ReturnType<typeof Model>;
     User: ReturnType<typeof User>;
   }
 }

@@ -2,88 +2,81 @@
  * User Service
  */
 
-import { Service } from 'egg';
+import { Service } from 'egg'
 
-export interface UserItem {
-  _id: string;
-  mobile: string;
-  name: string;
-  password: string;
-  avatar: string;
-  profile: object;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date;
+export interface IUserItem {
+  id: string
+  mobile: string
+  name: string
+  password: string
+  avatar: string
+  profile: object
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date
 }
 
 export default class User extends Service {
 
-  private userFilter: string[];
-
   constructor(ctx) {
-    super(ctx);
-
-    this.userFilter = [ 'avatar', 'createdAt', 'profile', 'extra' ];
+    super(ctx)
   }
 
   public async index() {
-    const { ctx } = this;
-    const res = await ctx.model.User
-      .find({}, this.userFilter)
-      .sort({ createdAt: -1 })
-      .exec();
-    return res;
+    const { ctx } = this
+    const res = await ctx.model.User.findAll()
+    return res
   }
 
   public async create(payload: any) {
-    const { ctx } = this;
-    payload.password = await ctx.genHash(payload.password);
-    return await ctx.model.User.create(payload);
+    const { ctx } = this
+    return await ctx.model.User.create(payload)
   }
 
-  public async destroy(_id: string) {
-    const { ctx } = this;
-    const user = await this.findById(_id);
+  public async update(id, payload: IUserItem) {
+    const { ctx } = this
+    const user = await ctx.model.User.findById(id)
     if (!user) {
-      ctx.throw(404, ctx.__('Common_item_not_found'));
+      ctx.throw(404, ctx.__('Common_item_not_found'))
     }
-    return await ctx.model.User.findByIdAndDelete(_id);
+    return await ctx.model.User.update(payload)
   }
 
-  public async show(_id: string) {
-    const { ctx } = this;
-    const user = await ctx.model.User.findById(_id, this.userFilter);
+  public async show(id: string) {
+    const { ctx } = this
+    const user = await ctx.model.User.findById(id)
     if (!user) {
-      ctx.throw(404, ctx.__('Common_item_not_found'));
+      ctx.throw(404, ctx.__('Common_item_not_found'))
     }
-    return user;
+    return user
   }
 
-  public async update(_id: string, payload: UserItem): Promise<UserItem> {
-    const { ctx } = this;
-    const user = await this.findById(_id);
+  public async findByMobile(mobile: string) {
+    const { ctx } = this
+    return await ctx.model.User.findOne({
+      where: { mobile },
+    })
+  }
+
+  public async destroy(id: string) {
+    const { ctx } = this
+    const user = await ctx.model.User.findById(id)
     if (!user) {
-      ctx.throw(404, ctx.__('Common_item_not_found'));
+      ctx.throw(404, ctx.__('Common_item_not_found'))
     }
-    payload.updatedAt = new Date();
-    return await ctx.model.User.findByIdAndUpdate(_id, payload);
+    // return await ctx.model.User.findByIdAndDelete(id)
   }
 
   public async profile() {
-    const { ctx } = this;
-    const { info: { _id: userId } } = ctx.state.user;
-    return await this.ctx.model.User.findById(userId, this.userFilter);
+    const { ctx } = this
+    const { info: { id: userId } } = ctx.state.user
+    return await ctx.model.User.findById(userId)
   }
 
-  public async findById(_id: string): Promise<UserItem> {
-    return await this.ctx.model.User.findById(_id);
+  /*
+  public async findByIdAndUpdate(id: string, values: IUserItem) {
+    const { ctx } = this
+    return await ctx.model.User.findByIdAndUpdate(id, values)
   }
-
-  public async findByMobile(mobile: string): Promise<UserItem> {
-    return await this.ctx.model.User.findOne({mobile});
-  }
-
-  public async findByIdAndUpdate(_id: string, values: UserItem) {
-    return await this.ctx.model.User.findByIdAndUpdate(_id, values);
-  }
+  */
 }

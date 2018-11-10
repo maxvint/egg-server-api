@@ -1,26 +1,22 @@
-import { EggPlugin } from 'egg';
+import { EggPlugin } from 'egg'
 
 const plugin: EggPlugin = {
   static: true,
-  // nunjucks: {
-  //   enable: true,
-  //   package: 'egg-view-nunjucks',
-  // },
 
   bcrypt: {
     enable: true,
     package: 'egg-bcrypt',
   },
 
-  mongoose: {
+  sequelize: {
     enable: true,
-    package: 'egg-mongoose',
+    package: 'egg-sequelize',
   },
 
   validate: {
     enable: true,
     package: 'egg-validate',
-  }
-};
+  },
+}
 
-export default plugin;
+export default plugin

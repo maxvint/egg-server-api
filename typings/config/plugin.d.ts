@@ -2,5 +2,5 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg-bcrypt';
-import 'egg-mongoose';
+import 'egg-sequelize';
 import 'egg-validate';
