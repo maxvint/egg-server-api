@@ -1,13 +1,3 @@
-// 用户外键
-// uid: String,
-// 商品外键
-// gid: {
-//   type: mongoose.Schema.Types.ObjectId,
-//   ref: 'Good'
-// },
-// 浏览时间
-// date: String
-
 // import { Application } from 'egg'
 // import * as Sequelize from 'sequelize'
 
@@ -47,11 +37,10 @@ interface IUserModel extends Model<IUserInstance, IUserAttributes> {
 export default (app: Application) => {
   const { STRING } = app.Sequelize
 
-  const User = BaseModel(app, 'User', {
+  const User = BaseModel(app, 'user', {
     mobile: {
       type: STRING(20),
       unique: true,
-      // required: true,
       comment: '手机号',
     },
     name: {
@@ -73,22 +62,31 @@ export default (app: Application) => {
       comment: '简介',
     },
   }, {
-    // defaultScope: {
-      // attributes: { exclude: ['password'] },
-    // },
-    // 修改器
-    getterMethods: {
-      mobile() {
-        return formatMobile((this as any).getDataValue('mobile'))
+      defaultScope: {
+        attributes: {
+          exclude: ['password'],
+        },
       },
-    },
-    setterMethods: {
-      password(value: string) {
-        // 加密密码
-        (this as any).setDataValue('password', createBcrypt(value))
+      scopes: {
+        withPassword: {
+          attributes: {
+            exclude: null,
+          },
+        },
       },
-    },
-  })
+      // 修改器
+      getterMethods: {
+        mobile() {
+          return formatMobile((this as any).getDataValue('mobile'))
+        },
+      },
+      setterMethods: {
+        password(value: string) {
+          // 加密密码
+          (this as any).setDataValue('password', createBcrypt(value))
+        },
+      },
+    })
 
   // User.hidden = (): string[] => {
   //   return [

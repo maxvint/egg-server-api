@@ -2,7 +2,7 @@
  * User Service
  */
 
-import { Service } from 'egg'
+import BaseService from './base'
 
 export interface IUserItem {
   id: string
@@ -16,21 +16,21 @@ export interface IUserItem {
   deleted_at: Date
 }
 
-export default class User extends Service {
+class UserService extends BaseService {
+
+  public cmodel
 
   constructor(ctx) {
     super(ctx)
+    this.cmodel = ctx.model.User
   }
 
-  public async index() {
-    const { ctx } = this
-    const res = await ctx.model.User.findAll()
-    return res
+  public async list() {
+    return await this.page()
   }
 
   public async create(payload: any) {
-    const { ctx } = this
-    return await ctx.model.User.create(payload)
+    return await this.cmodel.create(payload)
   }
 
   public async update(id, payload: IUserItem) {
@@ -42,7 +42,7 @@ export default class User extends Service {
     return await ctx.model.User.update(payload)
   }
 
-  public async show(id: string) {
+  public async findById(id: string) {
     const { ctx } = this
     const user = await ctx.model.User.findById(id)
     if (!user) {
@@ -80,3 +80,5 @@ export default class User extends Service {
   }
   */
 }
+
+export default UserService

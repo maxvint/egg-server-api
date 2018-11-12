@@ -1,21 +1,21 @@
-import { Controller } from 'egg'
+import BaseController from './base'
 
-export default class UserController extends Controller {
+class UserController extends BaseController {
 
   constructor(ctx) {
     super(ctx)
   }
 
-  public async index() {
-    const { ctx, service } = this
-    const res = await service.user.index()
-    ctx.helper.success({ ctx, code: 1, data: res })
+  public async list() {
+    const { service } = this
+    const { data, pagination } = await service.user.list()
+    this.page(data, pagination)
   }
 
   public async show() {
     const { ctx, service } = this
     const { id } = ctx.params
-    const res = await service.user.show(id)
+    const res = await service.user.findById(id)
     ctx.helper.success({ ctx, code: 1, data: res })
   }
 
@@ -40,3 +40,5 @@ export default class UserController extends Controller {
     ctx.helper.success({ ctx, code: 1, data: user })
   }
 }
+
+export default UserController

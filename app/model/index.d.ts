@@ -1,4 +1,4 @@
-import { DefineAttributes } from "sequelize";
+import { DefineAttributes } from 'sequelize'
 
 declare module 'egg' {
   interface Application {

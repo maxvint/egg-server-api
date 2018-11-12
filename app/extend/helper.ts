@@ -37,6 +37,8 @@ export const formatMobile = (mobile: string) => {
 }
 
 export const filterUser = (user: IUserItem) => {
-  delete user.password
+  if (user.password) {
+    delete user.password
+  }
   return user
 }

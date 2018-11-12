@@ -14,7 +14,7 @@ export default (app: Application) => {
 
   // user
   // router.resources('user', `/${VERSION}/user`, controller.user)
-  router.get(`/${VERSION}/users`, controller.user.index)
+  router.get(`/${VERSION}/users`, controller.user.list)
   router.get(`/${VERSION}/user/profile`, userInterceptor, controller.user.profile)
   router.get(`/${VERSION}/user/:id`, controller.user.show)
   router.put(`/${VERSION}/user/:id`, controller.user.update)

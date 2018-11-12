@@ -14,7 +14,7 @@ export interface ISignUpPayload {
 /**
  * Auth Service
  */
-export default class Auth extends Service {
+class AuthService extends Service {
 
   /**
    * 用户登录
@@ -73,7 +73,7 @@ export default class Auth extends Service {
   public async signUp(payload: ISignUpPayload) {
     const { ctx, service, app } = this
     try {
-      // 手机号是否注册过
+      // 验证手机号是否注册过
       const { mobile } = payload
       const verifyMobile = await service.user.findByMobile(mobile)
       if (verifyMobile) {
@@ -97,7 +97,7 @@ export default class Auth extends Service {
           ctx.helper.success({
             ctx,
             data: {
-              user,
+              user: ctx.helper.filterUser(user.dataValues),
               token,
             },
             message: ctx.__('Auth_signup_success'),
@@ -109,3 +109,5 @@ export default class Auth extends Service {
     }
   }
 }
+
+export default AuthService
