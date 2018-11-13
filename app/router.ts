@@ -15,9 +15,10 @@ export default (app: Application) => {
   // user
   // router.resources('user', `/${VERSION}/user`, controller.user)
   router.get(`/${VERSION}/users`, controller.user.list)
-  router.get(`/${VERSION}/user/profile`, userInterceptor, controller.user.profile)
   router.get(`/${VERSION}/user/:id`, controller.user.show)
+  router.post(`/${VERSION}/user`, controller.user.create)
   router.put(`/${VERSION}/user/:id`, controller.user.update)
+  router.delete(`/${VERSION}/user/:id`, controller.user.destroy)
 
   // topic
   // router.get(`/${VERSION}/topics`, controller.topic.index)

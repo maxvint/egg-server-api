@@ -2,6 +2,8 @@ import BaseController from './base'
 
 class UserController extends BaseController {
 
+  private userUpdateTransfer: IUserTransfer
+
   constructor(ctx) {
     super(ctx)
   }
@@ -16,28 +18,31 @@ class UserController extends BaseController {
     const { ctx, service } = this
     const { id } = ctx.params
     const res = await service.user.findById(id)
-    ctx.helper.success({ ctx, code: 1, data: res })
+    this.success({ code: 1, data: res })
+  }
+
+  public async create() {
+    const { ctx, service } = this
+    const payload = ctx.request.body
+    ctx.validate(this.userUpdateTransfer, payload)
+    const res = await service.user.create(payload)
+    this.success({ code: 1, data: res })
   }
 
   public async update() {
     const { ctx, service } = this
     const { id } = ctx.params
-    const payload = ctx.request.body || {}
-    await service.user.update(id, payload)
-    ctx.helper.success({ ctx })
+    const payload = ctx.request.body
+    ctx.validate(this.userUpdateTransfer, payload)
+    const res = await service.user.update(id, payload)
+    this.success({ code: 1, data: res })
   }
 
   public async destroy() {
     const { ctx, service } = this
     const { id } = ctx.params
-    await service.user.destroy(id)
-    ctx.helper.success({ ctx })
-  }
-
-  public async profile() {
-    const { ctx, service } = this
-    const user = await service.user.profile()
-    ctx.helper.success({ ctx, code: 1, data: user })
+    const res = await service.user.destroy(id)
+    this.success({ code: 1, data: res })
   }
 }
 

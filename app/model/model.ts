@@ -8,7 +8,7 @@ const BaseModel = (
   attributes: DefineAttributes,
   options: object = {}) => {
 
-  const { Op, UUID, UUIDV4 } = app.Sequelize
+  const { UUID, UUIDV4 } = app.Sequelize
 
   const modelSchema = app.model.define(table, {
     id: {
@@ -31,6 +31,7 @@ const BaseModel = (
       paranoid: true,
       freezeTableName: false,
       ...options,
+      /*
       scopes: {
         // 定义全局作用域，使用方法如: .scope('onlyTrashed') or .scope('onlyTrashed1', 'onlyTrashed12') [ 多个作用域 ]
         onlyTrashed: {
@@ -42,6 +43,7 @@ const BaseModel = (
           },
         },
       },
+      */
     })
 
   /**

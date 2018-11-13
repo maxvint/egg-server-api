@@ -1,38 +1,6 @@
-// import { Application } from 'egg'
-// import * as Sequelize from 'sequelize'
-
-// export interface AppAttributes {
-//   id: number
-//   title: string
-//   appid: string
-//   secret: string
-// }
-
-// export interface AppInstance extends Sequelize.Instance<AppAttributes>, AppAttributes {
-// }
-
 import { Application } from 'egg'
 import { createBcrypt, formatMobile } from '../extend/helper'
 import BaseModel from './model'
-
-/*
-interface IUserAttributes {
-  mobile: string
-  name: string
-  password: string
-  avatar: string
-  profile: string
-  deleted_at: string
-  created_at: string
-  updated_at: string
-}
-
-interface IUserInstance extends Instance<IUserAttributes>, IUserAttributes {}
-
-interface IUserModel extends Model<IUserInstance, IUserAttributes> {
-  findByMobile(mobile: string): void
-}
-*/
 
 export default (app: Application) => {
   const { STRING } = app.Sequelize
@@ -68,9 +36,9 @@ export default (app: Application) => {
         },
       },
       scopes: {
-        withPassword: {
+        password: {
           attributes: {
-            exclude: null,
+            include: ['password'],
           },
         },
       },
@@ -87,12 +55,6 @@ export default (app: Application) => {
         },
       },
     })
-
-  // User.hidden = (): string[] => {
-  //   return [
-  //     'password',
-  //   ]
-  // }
 
   // User.associate = () => {
   //   app.model.User.belongsTo(app.model.Profile, { as: 'user' })

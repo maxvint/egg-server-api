@@ -35,16 +35,16 @@ class UserService extends BaseService {
 
   public async update(id, payload: IUserItem) {
     const { ctx } = this
-    const user = await ctx.model.User.findById(id)
+    const user = await this.cmodel.findById(id)
     if (!user) {
       ctx.throw(404, ctx.__('Common_item_not_found'))
     }
-    return await ctx.model.User.update(payload)
+    return await this.cmodel.update(payload)
   }
 
   public async findById(id: string) {
     const { ctx } = this
-    const user = await ctx.model.User.findById(id)
+    const user = await this.cmodel.findById(id)
     if (!user) {
       ctx.throw(404, ctx.__('Common_item_not_found'))
     }
@@ -52,25 +52,26 @@ class UserService extends BaseService {
   }
 
   public async findByMobile(mobile: string) {
-    const { ctx } = this
-    return await ctx.model.User.findOne({
+    return await this.cmodel.findOne({
       where: { mobile },
     })
   }
 
   public async destroy(id: string) {
     const { ctx } = this
-    const user = await ctx.model.User.findById(id)
+    const user = await this.cmodel.findById(id)
     if (!user) {
       ctx.throw(404, ctx.__('Common_item_not_found'))
     }
-    // return await ctx.model.User.findByIdAndDelete(id)
+    return await this.cmodel.destroy({
+      where: { id },
+    })
   }
 
   public async profile() {
     const { ctx } = this
     const { info: { id: userId } } = ctx.state.user
-    return await ctx.model.User.findById(userId)
+    return await this.cmodel.findById(userId)
   }
 
   /*
