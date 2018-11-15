@@ -1,9 +1,9 @@
 interface ISignInTransfer {
-  mobile: string
-  password: string
+  mobile: object
+  password: object
 }
 
 interface ISignUpTransfer {
-  mobile: string
-  password: string
+  mobile: object
+  password: object
 }
