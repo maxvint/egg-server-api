@@ -1,5 +1,5 @@
-# Egg-server-mysql
-Egg server API with mysql, redis, typescript.
+# Egg-server-api
+Egg server API written by Egg.js, MySQL, Redis, TypeScript.
 
 ## QuickStart
 
@@ -24,7 +24,7 @@ $ yarn start
 
 - Use `yarn lint` to check code style
 - Use `yarn test` to run unit test
-- se `yarn clean` to clean compiled js at development mode once
+- Use `yarn clean` to clean compiled js at development mode once
 
 ### Requirement
 
