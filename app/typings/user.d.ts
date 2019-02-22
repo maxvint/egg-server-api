@@ -1,4 +1,6 @@
-interface IUserTransfer {
-  mobile: string
-  password: string
+interface IUserUpdateTransfer {
+  nickname: object
+  qq: object
+  email: object
+  introduction: object
 }

@@ -1,64 +1,101 @@
 import { Application } from 'egg'
-import { createBcrypt, formatMobile } from '../extend/helper'
-import BaseModel from './model'
+import {
+  md5,
+  formatMobile,
+  generateRadomStr,
+} from '../extend/helper'
 
 export default (app: Application) => {
-  const { STRING } = app.Sequelize
+  const { DATE, STRING, TINYINT } = app.Sequelize
 
-  const User = BaseModel(app, 'user', {
-    mobile: {
-      type: STRING(20),
-      unique: true,
-      comment: '手机号',
+  const User = app.model.define('User', {
+    open_id: {
+      type: STRING(255),
+      comment: 'openid',
     },
-    name: {
-      type: STRING(32),
-      comment: '姓名',
+    username: {
+      type: STRING(255),
+    },
+    nickname: {
+      type: STRING(255),
+    },
+    mobile: {
+      type: STRING(255),
+      get() {
+        return (this as any).getDataValue('mobile') ? formatMobile((this as any).getDataValue('mobile')) : 0
+      },
     },
     password: {
       type: STRING(255),
-      // required: true,
-      comment: '密码',
+      set(val: string) {
+        (this as any).setDataValue('password', md5(val))
+      },
     },
-    avatar: {
+    gravatar: {
       type: STRING(255),
-      // default: 'https://1.gravatar.com/avatar/a3e54af3cb6e157e496ae430aed4f4a3?s=96&d=mm',
-      comment: '头像',
     },
-    profile: {
+    is_finish_guide_task: {
+      type: TINYINT,
+      allowNull: false,
+      defaultValue: 0,
+      comment: '是否完成新手任务标志',
+    },
+    qq: {
+      type: STRING,
+    },
+    email: {
+      type: STRING,
+    },
+    introduction: {
+      type: STRING,
+      defaultValue: '他很懒，什么也没有留下',
+      comment: '用户介绍',
+    },
+    gender: {
+      type: TINYINT,
+      defaultValue: 0,
+      comment: '0-保密，1-男，2-女',
+      get() {
+        return Number((this as any).getDataValue('gender'))
+      },
+    },
+    role: {
+      type: TINYINT(1),
+      defaultValue: 0,
+      comment: '用户角色，0-标注人员，1-企业人员',
+      get() {
+        return Number((this as any).getDataValue('role'))
+      },
+    },
+    skills: {
       type: STRING(255),
-      comment: '简介',
+      defaultValue: null,
+      comment: '关联的技能tag',
+    },
+    invite_code: {
+      type: STRING(10),
+      defaultValue: null,
+      comment: '新用户生成专属邀请码',
+      set() {
+        (this as any).setDataValue('invite_code', generateRadomStr(5))
+      },
+    },
+    remark: {
+      type: STRING(255),
+    },
+    last_logined_at: {
+      type: DATE,
+    },
+    x_status: {
+      type: TINYINT(1),
+      allowNull: true,
+      defaultValue: 1,
+      comment: '状态',
     },
   }, {
-      defaultScope: {
-        attributes: {
-          exclude: ['password'],
-        },
-      },
-      scopes: {
-        password: {
-          attributes: {
-            include: ['password'],
-          },
-        },
-      },
-      // 修改器
-      getterMethods: {
-        mobile() {
-          return formatMobile((this as any).getDataValue('mobile'))
-        },
-      },
-      setterMethods: {
-        password(value: string) {
-          // 加密密码
-          (this as any).setDataValue('password', createBcrypt(value))
-        },
-      },
-    })
-
-  // User.associate = () => {
-  //   app.model.User.belongsTo(app.model.Profile, { as: 'user' })
-  // }
+    tableName: 'user',
+    paranoid: true,
+  })
 
   return User
 }

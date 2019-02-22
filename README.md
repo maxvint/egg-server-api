@@ -29,4 +29,4 @@ $ yarn start
 ### Requirement
 
 - Node.js 8.x
-- Typescript 2.8+
+- Typescript 3.0+

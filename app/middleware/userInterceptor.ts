@@ -1,27 +1,10 @@
 import { Application } from 'egg'
 import * as jwt from 'jsonwebtoken'
 
-// interface UserInfo {
-//   isAuth: boolean
-//   message: string
-//   info: object
-// }
-
-// interface accessToken {
-//   data: object
-//   exp: number
-// }
-
 export default (app: Application) => {
-  return async function userInterceptor (ctx, next) {
-    ctx.state.user = {
-      isAuth: false,
-      info: {},
-    }
-
-    let userId
-
+  return async function userInterceptor (ctx: any, next: any) {
     const accessTokenHeaderStr = ctx.request.headers.authorization || false
+    let userId: number
 
     if (!accessTokenHeaderStr) {
       ctx.state.user.message = '缺少Token'
@@ -38,7 +21,8 @@ export default (app: Application) => {
     // token异常过期后，刷新重新返回token
     try {
       const decoded = await jwt.verify(accessToken, app.config.jwt.secret)
-      userId = decoded['data']['_id']
+      /* tslint:disable:no-string-literal */
+      userId = decoded['data']['id'] as number
     } catch (err) {
       if (err.name === 'TokenExpiredError') {
         ctx.throw(401, ctx.__('JWT_user_token_expired'))
@@ -48,17 +32,13 @@ export default (app: Application) => {
       return await next()
     }
 
-    const user = await ctx.model.User.findById(userId)
+    const user = await ctx.model.User.findByPk(userId)
     if (!user) {
       ctx.throw(401, ctx.__('JWT_user_not_found'))
       return await next()
     }
 
-    ctx.state.user = {
-      isAuth: true,
-      info: user,
-    }
-
+    ctx.user = user
     await next()
   }
 }

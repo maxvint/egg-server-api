@@ -1,32 +1,32 @@
-import { Service } from 'egg'
-// import { Model } from 'sequelize'
+import { Context, Service } from 'egg'
+import CountService from './count'
 
 /**
  * Base Service
  */
 class BaseService extends Service {
 
-  public cmodel
+  public cmodel: any
+  public countService: CountService
+  public currentUserId: number
   private pageParams: IPagination
 
-  constructor(ctx) {
+  constructor(ctx: Context) {
     super(ctx)
 
     this.cmodel = null
+    this.countService = this.service.count
+    this.currentUserId = ctx.user.id || 0
     this.pageParams = {
       page: Number(this.ctx.query.page) || 1,
       page_size: Number(this.ctx.query.page_size) || 10,
-      total_page: 1,
-      total_count: 0,
+      page_max: 1,
+      total: 0,
     }
   }
 
-  // async findById(id) {
-  // return await this.
-  // }
-
   /**
-   * 分页方法
+   * 通用分页方法
    * @param  {Object} conditions [description]
    * @param  {Array} order [description]
    * @param  {Object} include [description]
@@ -34,12 +34,12 @@ class BaseService extends Service {
    * @param  {[type]} group [description]
    * @return {[type]} [description]
    */
-  async page(params = {
+  async page(params: IPageParams = {
     model: null,
     conditions: {},
     order: [['id', 'desc']],
     include: [],
-    attributes: {},
+    attributes: [],
   }): Promise<{ data: any, pagination: IPagination }> {
     const { model, conditions, order, include } = params
 
@@ -47,19 +47,21 @@ class BaseService extends Service {
       this.cmodel = model
     }
 
-    const { count, rows: data } = await this.cmodel.findAndCountAll({
+    const total = await this.cmodel.count({
+      where: conditions,
+    })
+    const data = await this.cmodel.findAll({
       where: conditions,
       offset: (this.pageParams.page - 1) * this.pageParams.page_size,
       limit: this.pageParams.page_size,
-      order,
       include,
+      order,
     })
 
-    this.pageParams.total_count = count
-    this.pageParams.total_page = Math.ceil(count / this.pageParams.page_size)
+    this.pageParams.total = total
+    this.pageParams.page_max = Math.ceil(total / this.pageParams.page_size)
     return { data, pagination: this.pageParams }
   }
-
 }
 
 export default BaseService

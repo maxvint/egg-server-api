@@ -1,13 +1,22 @@
+declare type KeyMap = Map<number, string>
+
 interface IPagination {
   page: number
   page_size: number
-  total_page: number
-  total_count: number
+  page_max: number
+  total: number
 }
 
 interface IPageParams {
-  conditions: object
-  order: Array
-  include: Array
-  attributes: Array
+  model?: any
+  conditions?: object
+  order?: Array
+  include?: Array
+  attributes?: Array
+}
+
+interface ISucessResponse {
+  code: number
+  data: any
+  message?: string
 }

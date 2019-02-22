@@ -5,12 +5,12 @@ import { app } from 'egg-mock/bootstrap'
 describe('test/app/service/Test.test.js', () => {
   let ctx: Context
 
-  before(async () => {
+  beforeEach(async () => {
     ctx = app.mockContext()
   })
 
   it('sayHi', async () => {
-    const result = await ctx.service.test.sayHi('egg')
-    assert(result === 'hi, egg')
+    const result = await ctx.service.test.sayHi('Markapi')
+    assert(result === 'Markapi')
   })
 })
